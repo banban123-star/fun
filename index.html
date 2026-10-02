@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Mobile optimized viewport: prevents pinch-to-zoom and scaling -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nano AR - Mobile Version</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- Now a full-screen container -->
+  <div class="container">
+    <video class="input_video" autoplay playsinline></video>
+    <div class="ar-grid"></div>
+
+    <!-- The SVG will now dynamically resize to the screen -->
+    <svg class="output_svg" id="ar-svg">
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <g id="connections-group"></g>
+      <g id="landmarks-group"></g>
+    </svg>
+
+    <div class="scanlines"></div>
+
+    <!-- HUD adjustments for mobile -->
+    <div class="nano-hud">
+      <div class="hud-top-left">
+        <div class="system-title">NANO_SYS_ACTIVE</div>
+        <div id="status-text">SCANNING...</div>
+      </div>
+      <div class="hud-bottom-right">
+        <div class="data-title">BIO_DATA</div>
+        <div id="coord-data">X:--- Y:--- Z:---</div>
+      </div>
+    </div>
+
+    <!-- Reticle and Tracker -->
+    <div id="target-reticle" class="hidden">
+      <div class="reticle-corner top-left"></div>
+      <div class="reticle-corner top-right"></div>
+      <div class="reticle-corner bottom-left"></div>
+      <div class="reticle-corner bottom-right"></div>
+      <div class="ring ring-inner"></div>
+      <div class="ring ring-outer"></div>
+      <div class="reticle-center"></div>
+    </div>
+
+    <div id="node-tracker" class="hidden">
+      <div class="tracker-line"></div>
+      <div class="tracker-label">NODE_08<br><span>ANALYZING...</span></div>
+    </div>
+
+    <!-- Target Status Panel -->
+    <div id="target-status" class="hidden">
+      <div class="status-header">TARGET ACQUIRED</div>
+      <div class="status-body">
+        <div class="stat-row"><span class="label">NAME:</span> <span class="value highlight">Ivan Bankin</span></div>
+        <div class="stat-row"><span class="label">AGE:</span> <span class="value error">UNKNOWN</span></div>
+        <div class="stat-row"><span class="label">STR:</span> <span class="value error">CORRUPTED</span></div>
+        <div class="stat-row"><span class="label">AGI:</span> <span class="value error">CORRUPTED</span></div>
+        <div class="stat-row"><span class="label">QI:</span> <span class="value error">UNMEASURABLE</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
